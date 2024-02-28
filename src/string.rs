@@ -56,10 +56,9 @@ impl Deref for DexString {
 
 impl<'a> ctx::TryFromCtx<'a, scroll::Endian> for DexString {
     type Error = error::Error;
-    type Size = usize;
 
     // https://source.android.com/devices/tech/dalvik/dex-format#string-data-item
-    fn try_from_ctx(source: &'a [u8], _: scroll::Endian) -> Result<(Self, Self::Size)> {
+    fn try_from_ctx(source: &'a [u8], _: scroll::Endian) -> Result<(Self, usize)> {
         let offset = &mut 0;
         let _ = Uleb128::read(source, offset)?;
         let count = source

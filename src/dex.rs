@@ -176,9 +176,8 @@ impl DexInner {
 // TODO: this should be try_from_dex
 impl<'a> ctx::TryFromCtx<'a, ()> for DexInner {
     type Error = error::Error;
-    type Size = usize;
 
-    fn try_from_ctx(source: &'a [u8], _: ()) -> Result<(Self, Self::Size)> {
+    fn try_from_ctx(source: &'a [u8], _: ()) -> Result<(Self, usize)> {
         if source.len() <= 44 {
             debug!("malformed dex: size < minimum header size");
             return Err(Error::MalFormed("Invalid dex file".to_string()));
@@ -228,9 +227,8 @@ pub struct MapList {
 
 impl<'a> ctx::TryFromCtx<'a, Endian> for MapList {
     type Error = error::Error;
-    type Size = usize;
 
-    fn try_from_ctx(source: &'a [u8], endian: Endian) -> Result<(Self, Self::Size)> {
+    fn try_from_ctx(source: &'a [u8], endian: Endian) -> Result<(Self, usize)> {
         let offset = &mut 0;
         let size: uint = source.gread_with(offset, endian)?;
         Ok((
@@ -301,9 +299,8 @@ pub struct MapItem {
 
 impl<'a> ctx::TryFromCtx<'a, Endian> for MapItem {
     type Error = error::Error;
-    type Size = usize;
 
-    fn try_from_ctx(source: &'a [u8], endian: Endian) -> Result<(Self, Self::Size)> {
+    fn try_from_ctx(source: &'a [u8], endian: Endian) -> Result<(Self, usize)> {
         let offset = &mut 0;
         let item_type: ushort = source.gread_with(offset, endian)?;
         let item_type = ItemType::from_u16(item_type).ok_or_else(|| {

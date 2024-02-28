@@ -22,6 +22,7 @@ pub type ClassId = uint;
 
 bitflags! {
     /// Access flags of a `Class`.
+    #[derive(Debug)]
     pub struct AccessFlags: uint {
         const PUBLIC = 0x1;
         const PRIVATE = 0x2;
@@ -254,9 +255,8 @@ where
     S: AsRef<[u8]>,
 {
     type Error = Error;
-    type Size = usize;
 
-    fn try_from_ctx(source: &'a [u8], dex: &super::Dex<S>) -> super::Result<(Self, Self::Size)> {
+    fn try_from_ctx(source: &'a [u8], dex: &super::Dex<S>) -> Result<(Self, usize), Self::Error> {
         let offset = &mut 0;
         let static_field_size = Uleb128::read(source, offset)?;
         let instance_field_size = Uleb128::read(source, offset)?;

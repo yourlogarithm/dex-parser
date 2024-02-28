@@ -1,5 +1,7 @@
 use std::{ops::Index, rc::Rc};
 
+use scroll::ctx::{MeasureWith, TryFromCtx};
+
 use crate::ubyte;
 
 /// Represents the source `Dex` file. This is a
@@ -64,5 +66,25 @@ impl<T> Clone for Source<T> {
 impl<T: AsRef<[u8]>> AsRef<[u8]> for Source<T> {
     fn as_ref(&self) -> &[ubyte] {
         self.inner.as_ref().as_ref()
+    }
+}
+
+
+impl<T: AsRef<[u8]>, Ctx: std::marker::Copy, E: std::convert::From<scroll::Error>> scroll::Pread<Ctx, E> for Source<T> {
+    fn gread_with<'a, N: TryFromCtx<'a, Ctx, Self, Error = E>>(
+        &'a self,
+        offset: &mut usize,
+        ctx: Ctx,
+    ) -> Result<N, E>
+    {
+        let o = *offset;
+        let len = self.measure_with(&ctx);
+        if o >= len {
+            return Err(scroll::Error::BadOffset(o).into())
+        }
+        N::try_from_ctx(&self, ctx).and_then(|(n, size)| {
+            *offset += size;
+            Ok(n)
+        })
     }
 }

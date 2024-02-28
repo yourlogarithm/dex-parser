@@ -253,9 +253,8 @@ pub type EncodedMethodArray = EncodedItemArray<EncodedMethod>;
 
 impl<'a> ctx::TryFromCtx<'a, ulong> for EncodedMethod {
     type Error = Error;
-    type Size = usize;
 
-    fn try_from_ctx(source: &'a [u8], prev_id: ulong) -> super::Result<(Self, Self::Size)> {
+    fn try_from_ctx(source: &'a [u8], prev_id: ulong) -> super::Result<(Self, usize)> {
         let offset = &mut 0;
         let id = Uleb128::read(source, offset)?;
         let access_flags = Uleb128::read(source, offset)?;
@@ -306,9 +305,8 @@ pub struct MethodHandleItem {
 
 impl<'a, S: AsRef<[u8]>> ctx::TryFromCtx<'a, &super::Dex<S>> for MethodHandleItem {
     type Error = Error;
-    type Size = usize;
 
-    fn try_from_ctx(source: &'a [u8], dex: &super::Dex<S>) -> super::Result<(Self, Self::Size)> {
+    fn try_from_ctx(source: &'a [u8], dex: &super::Dex<S>) -> super::Result<(Self, usize)> {
         let endian = dex.get_endian();
         let offset = &mut 0;
         let handle_type: ushort = source.gread_with(offset, endian)?;
