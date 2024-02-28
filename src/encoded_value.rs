@@ -1,7 +1,7 @@
 //! Contains structures defining values in a `Dex`.
 use num_derive::FromPrimitive;
 use num_traits::FromPrimitive;
-use scroll::{self, ctx, Pread, Uleb128, LE};
+use scroll::{ctx, Pread, Uleb128, LE};
 
 use crate::{
     annotation::EncodedAnnotation,

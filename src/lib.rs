@@ -2,6 +2,7 @@
 //! [dex](https://source.android.com/devices/tech/dalvik/dex-format) file format.
 // Silence warnings in error module for now
 #![allow(bare_trait_objects)]
+#![feature(generic_nonzero)]
 
 pub extern crate scroll;
 

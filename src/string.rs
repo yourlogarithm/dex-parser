@@ -1,12 +1,10 @@
 //! Dex String utilities
 use std::{
-    convert::AsRef,
-    fmt,
-    ops::{Deref, Range},
+    fmt, num::NonZero, ops::{Deref, Range}
 };
 
 use cesu8::{from_java_cesu8, to_java_cesu8};
-use scroll::{self, ctx, Pread, Uleb128};
+use scroll::{ctx, Pread, Uleb128};
 
 use crate::{cache::Cache, error, error::Error, source::Source, uint, Result};
 use std::rc::Rc;
@@ -108,7 +106,7 @@ where
         endian: super::Endian,
         offset: uint,
         len: uint,
-        cache_size: usize,
+        cache_size: NonZero<usize>,
         data_section: Range<uint>,
     ) -> Self {
         Self {

@@ -4,8 +4,6 @@ use std::{
     io,
 };
 
-use scroll;
-
 #[derive(Debug)]
 pub enum Error {
     MalFormed(String),

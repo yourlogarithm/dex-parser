@@ -1,5 +1,5 @@
 //! Dex `Type` and utilities
-use std::{clone::Clone, fmt};
+use std::fmt;
 
 use getset::{CopyGetters, Getters};
 
