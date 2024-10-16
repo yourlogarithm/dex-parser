@@ -22,25 +22,19 @@ pub struct DebugInfoItem {
 }
 
 /// Code and Debug Info of a method.
-#[derive(Getters, CopyGetters)]
 pub struct CodeItem {
     /// The number of registers the method must use.
-    #[get_copy = "pub"]
-    registers_size: ushort,
+    pub registers_size: ushort,
     /// Line number and source file information.
-    debug_info_item: Option<DebugInfoItem>,
+    pub debug_info_item: Option<DebugInfoItem>,
     /// Number of words for incoming arguments to this method.
-    #[get_copy = "pub"]
-    ins_size: ushort,
+    pub ins_size: ushort,
     /// Number of words for outgoing arguments required for invocation.
-    #[get_copy = "pub"]
-    outs_size: ushort,
+    pub outs_size: ushort,
     /// Code instructions for this method.
-    #[get = "pub"]
-    insns: Vec<ushort>,
+    pub insns: Vec<ushort>,
     /// Try, Exception handling information of this method.
-    #[get = "pub"]
-    tries: Tries,
+    pub tries: Tries,
 }
 
 impl CodeItem {

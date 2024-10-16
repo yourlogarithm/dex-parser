@@ -37,42 +37,32 @@ bitflags! {
 }
 
 /// A `Dex` Class. This is constructed from a `ClassDefItem` and a `ClassDataItem`.
-#[derive(Debug, Getters, CopyGetters)]
+#[derive(Debug)]
 pub struct Class {
     /// Index into `TypeId`s. TypeId should refer to a class type.
-    #[get_copy = "pub"]
-    pub(crate) id: ClassId,
+    pub id: ClassId,
     /// Type of this class.
-    #[get = "pub"]
-    pub(crate) jtype: Type,
+    pub jtype: Type,
     /// Access flags for the class (public, final etc.)
     /// Check [here](https://source.android.com/devices/tech/dalvik/dex-format#access-flags) for
     /// full reference.
-    #[get_copy = "pub"]
-    pub(crate) access_flags: AccessFlags,
+    pub access_flags: AccessFlags,
     /// Index into the `TypeId`s for the super class, if there is one.
-    #[get_copy = "pub"]
-    pub(crate) super_class: Option<ClassId>,
+    pub super_class: Option<ClassId>,
     /// List of the interfaces implemented by this class.
-    #[get = "pub"]
-    pub(crate) interfaces: Vec<Type>,
+    pub interfaces: Vec<Type>,
     /// The file in which this class is found in the source code.
-    pub(crate) source_file: Option<DexString>,
+    pub source_file: Option<DexString>,
     /// Static fields defined in the class.
-    #[get = "pub"]
-    pub(crate) static_fields: Vec<Field>,
+    pub static_fields: Vec<Field>,
     /// Instance fields defined in the class.
-    #[get = "pub"]
-    pub(crate) instance_fields: Vec<Field>,
+    pub instance_fields: Vec<Field>,
     /// List of static, private methods and constructors defined in the class.
-    #[get = "pub"]
-    pub(crate) direct_methods: Vec<Method>,
+    pub direct_methods: Vec<Method>,
     /// List of parent class methods overriden by this class.
-    #[get = "pub"]
-    pub(crate) virtual_methods: Vec<Method>,
+    pub virtual_methods: Vec<Method>,
     /// Annotations of the class.
-    #[get = "pub"]
-    pub(crate) annotations: AnnotationSetItem,
+    pub annotations: AnnotationSetItem,
 }
 
 impl Class {
@@ -89,7 +79,7 @@ impl Class {
 
     /// Returns the value of `dalvik.annotation.Signature`.
     pub fn signature(&self) -> super::Result<Option<String>> {
-        utils::get_signature(self.annotations())
+        utils::get_signature(&self.annotations)
     }
 
     /// The file in which this class is found in the source code.
@@ -99,16 +89,16 @@ impl Class {
 
     /// List of fields defined in this class.
     pub fn fields(&self) -> impl Iterator<Item = &Field> + '_ {
-        self.static_fields()
+        self.static_fields
             .iter()
-            .chain(self.instance_fields().iter())
+            .chain(self.instance_fields.iter())
     }
 
     /// List of methods defined in this class.
     pub fn methods(&self) -> impl Iterator<Item = &Method> + '_ {
-        self.direct_methods()
+        self.direct_methods
             .iter()
-            .chain(self.virtual_methods().iter())
+            .chain(self.virtual_methods.iter())
     }
 
     pub(crate) fn try_from_dex<T: AsRef<[u8]>>(

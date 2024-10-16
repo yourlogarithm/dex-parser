@@ -67,7 +67,7 @@ macro_rules! gen_is_flag_set {
     ($name: ident, $flag: ident) => {
         /// Returns `true` if the access flag is set
         pub fn $name(&self) -> bool {
-            self.access_flags().contains(AccessFlags::$flag)
+            self.access_flags.contains(AccessFlags::$flag)
         }
     }
 }

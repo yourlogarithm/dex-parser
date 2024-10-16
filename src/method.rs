@@ -36,38 +36,29 @@ bitflags! {
 }
 
 /// Represents a `Class` method.
-#[derive(Debug, Getters, CopyGetters)]
+#[derive(Debug)]
 pub struct Method {
     /// Parent class of the method.
-    #[get = "pub"]
-    class: Type,
+    pub class: Type,
     /// Name of the method.
-    #[get = "pub"]
-    name: DexString,
+    pub name: DexString,
     /// Access flags of the method.
-    #[get_copy = "pub"]
-    access_flags: AccessFlags,
+    pub access_flags: AccessFlags,
     /// Types of the parameters of the method.
-    #[get = "pub"]
-    params: Vec<Type>,
+    pub params: Vec<Type>,
     /// Shorty descriptor of the method, as described
     /// [here](https://source.android.com/devices/tech/dalvik/dex-format#shortydescriptor)
-    #[get = "pub"]
-    shorty: DexString,
+    pub shorty: DexString,
     /// Return type of the method.
-    #[get = "pub"]
-    return_type: Type,
+    pub return_type: Type,
     /// Code and DebugInfo of the method.
-    code: Option<CodeItem>,
+    pub code: Option<CodeItem>,
     /// Annotations of the method.
-    #[get = "pub"]
-    annotations: AnnotationSetItem,
+    pub annotations: AnnotationSetItem,
     /// Annotations of the params.
-    #[get = "pub"]
-    param_annotations: AnnotationSetRefList,
+    pub param_annotations: AnnotationSetRefList,
     /// `MethodId` of the method.
-    #[get_copy = "pub"]
-    id: MethodId,
+    pub id: MethodId,
 }
 
 impl Method {
@@ -88,7 +79,7 @@ impl Method {
 
     /// Returns the value of `dalvik.annotation.Signature`.
     pub fn signature(&self) -> super::Result<Option<String>> {
-        utils::get_signature(self.annotations())
+        utils::get_signature(&self.annotations)
     }
 
     /// Code and DebugInfo of the method.
